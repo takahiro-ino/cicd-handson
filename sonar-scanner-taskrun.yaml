@@ -1,0 +1,20 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: sonar-scanner-taskrun
+spec:
+  taskRef:
+    name: sonar-scanner-task
+  params:
+    - name: sonarHostUrl
+      value: "https://sonarqube-ci-user1.apps.cluster-m2ffr.m2ffr.sandbox2725.opentlc.com/"
+    - name: sonarLogin
+      value: "admin"
+    - name: sonarPassword
+      value: "admin"
+    - name: gitRepositoryUrl
+      value: "https://github.com/takahiro-ino/cakephp-ex.git"
+  workspaces:
+    - name: workspace
+      persistentVolumeClaim:
+        claimName: your-pvc
