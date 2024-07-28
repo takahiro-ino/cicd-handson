@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: container-scan
+  labels:
+    app.kubernetes.io/version: "0.1"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.21.0"
+    tekton.dev/categories: Security
+    tekton.dev/tags: Security
+spec:
+  description: >-
+    This Task scans Comprehensive Vulnerability using Trivy for Containers
+    and other Artifacts, Suitable in CI.
+  params:
+  - name: IMAGE
+    description: Reference of the image Trivy will scan.
+  - name: IMAGE_DIGEST
+    description: Reference of the image digest Trivy will scan.
+  workspaces:
+  - name: workspace
+  stepTemplate:
+    env:
+    - name: TRIVY_USERNAME
+      value: ""
+    - name: TRIVY_PASSWORD
+      value: ""
+  steps:
+  - name: build-report
+    image: aquasec/trivy:0.19.2
+    script: |
+      SCAN_CONTAINER_IMAGE=$(params.IMAGE)@$(tasks.s2i-php.results.IMAGE_DIGEST)
+      mkdir -p $(workspaces.workspace.path)/trivy
+      trivy --cache-dir=$(workspaces.workspace.path)/trivy \
+        image --timeout 10m --exit-code=0 --severity=HIGH,CRITICAL \
+        ${SCAN_CONTAINER_IMAGE}
