@@ -7,12 +7,6 @@ spec:
     - name: sonarHostUrl
       type: string
       description: The URL of the SonarQube server
-    - name: sonarLogin
-      type: string
-      description: The login ID for the SonarQube server
-    - name: sonarPassword
-      type: string
-      description: The login password for the SonarQube server
     - name: gitRepositoryUrl
       type: string
       description: The URL of the GitHub repository to scan
@@ -42,5 +36,5 @@ spec:
           -Dsonar.projectVersion=1.0 \
           -Dsonar.sources=. \
           -Dsonar.host.url=$(params.sonarHostUrl) \
-          -Dsonar.login=$(params.sonarLogin) \
-          -Dsonar.password=$(params.sonarPassword)
+          -Dsonar.login=admin \
+          -Dsonar.password=admin
