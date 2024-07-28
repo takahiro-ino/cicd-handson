@@ -8,7 +8,7 @@ spec:
       type: string
   steps:
     - image: registry.redhat.io/ubi7/ubi-minimal
-       name: helloworld 
+      name: helloworld 
       script: |
         #!/bin/bash
         echo "$(params.appName)"
