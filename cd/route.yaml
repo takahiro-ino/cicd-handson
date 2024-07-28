@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: cake-php-route
+  labels:
+    app: cake-php
+spec:
+  to:
+    kind: Service
+    name: cake-php-service
+  port:
+    targetPort: 8080-tcp
+  wildcardPolicy: None
