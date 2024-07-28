@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: example
+spec:
+  taskRef:
+    name: example-task
+  params:
+    - name: appName
+      value: "HelloWorld"
