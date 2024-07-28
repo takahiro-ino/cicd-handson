@@ -1,0 +1,46 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sonar-scanner-task
+spec:
+  params:
+    - name: sonarHostUrl
+      type: string
+      description: The URL of the SonarQube server
+    - name: sonarLogin
+      type: string
+      description: The login ID for the SonarQube server
+    - name: sonarPassword
+      type: string
+      description: The login password for the SonarQube server
+    - name: gitRepositoryUrl
+      type: string
+      description: The URL of the GitHub repository to scan
+  workspaces:
+    - name: workspace
+      description: The workspace for the source code
+  steps:
+    - name: cleanup-repo
+      image: 'alpine'
+      script: |
+        #!/bin/sh
+        rm -rf $(workspaces.workspace.path)/repo
+    - name: clone-repo
+      image: 'alpine/git'
+      script: |
+        #!/bin/sh
+        git clone $(params.gitRepositoryUrl) $(workspaces.workspace.path)/repo
+    - name: run-sonar-scanner
+      image: docker.io/sonarsource/sonar-scanner-cli:4.6@sha256:edbf641d656ef38548eaf652b857afde7ce6235f6b458a523ba1670a728da6ad
+      script: |
+        #!/bin/bash
+        chown -R 1000:1000 $(workspaces.workspace.path)/repo
+        cd $(workspaces.workspace.path)/repo
+        sonar-scanner \
+          -Dsonar.projectKey=cakephp-ex \
+          -Dsonar.projectName=cakephp-ex \
+          -Dsonar.projectVersion=1.0 \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=$(params.sonarHostUrl) \
+          -Dsonar.login=$(params.sonarLogin) \
+          -Dsonar.password=$(params.sonarPassword)
