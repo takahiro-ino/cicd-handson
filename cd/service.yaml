@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cake-php-service
+  labels:
+    app: cake-php
+spec:
+  selector:
+    app: cake-php
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - protocol: TCP
+      port: 8443
+      targetPort: 8443
+  type: ClusterIP
