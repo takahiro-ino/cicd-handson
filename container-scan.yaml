@@ -29,7 +29,7 @@ spec:
   - name: build-report
     image: aquasec/trivy:0.19.2
     script: |
-      SCAN_CONTAINER_IMAGE=$(params.IMAGE)@$(tasks.s2i-php.results.IMAGE_DIGEST)
+      SCAN_CONTAINER_IMAGE=$(params.IMAGE)@$(params.IMAGE_DIGEST)
       mkdir -p $(workspaces.workspace.path)/trivy
       trivy --cache-dir=$(workspaces.workspace.path)/trivy \
         image --timeout 10m --exit-code=0 --severity=HIGH,CRITICAL \
