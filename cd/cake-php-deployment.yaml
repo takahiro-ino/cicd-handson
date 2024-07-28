@@ -22,3 +22,5 @@ spec:
               protocol: TCP
             - containerPort: 8443
               protocol: TCP
+      imagePullSecrets:
+        - name: my-registry-secret
