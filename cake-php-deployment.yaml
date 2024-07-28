@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cake-php-deployment
+  labels:
+    app: cake-php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cake-php
+  template:
+    metadata:
+      labels:
+        app: cake-php
+    spec:
+      containers:
+        - name: cake-php
+          image: image-registry.openshift-image-registry.svc:5000/ci-user25/cake-php:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
