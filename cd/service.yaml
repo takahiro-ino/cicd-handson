@@ -8,10 +8,12 @@ spec:
   selector:
     app: cake-php
   ports:
-    - protocol: TCP
+    - name: 8080-tcp
+      protocol: TCP
       port: 8080
       targetPort: 8080
-    - protocol: TCP
+    - name: 8443-tcp
+      protocol: TCP
       port: 8443
       targetPort: 8443
   type: ClusterIP
